@@ -9,7 +9,7 @@ return [
     | The title of your API documentation.
     |
     */
-    "title" => env("SWAGGER_TITLE", "Api Documentation"),
+    "title" => env("SWAGGER_TITLE", "Laravel Ten API Docs"),
 
     /*
     |--------------------------------------------------------------------------
@@ -19,7 +19,7 @@ return [
     | The description of your API.
     |
     */
-    "description" => env("SWAGGER_DESCRIPTION", "Laravel autogenerate swagger"),
+    "description" => env("SWAGGER_DESCRIPTION", "Learning laravel ten framework packages"),
 
     /*
     |--------------------------------------------------------------------------
@@ -61,6 +61,7 @@ return [
     */
     "auth_middlewares" => [
         "auth",
+        "auth:sanctum",
         "auth:api"
     ],
 
