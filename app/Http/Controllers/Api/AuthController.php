@@ -54,7 +54,11 @@ class AuthController extends Controller
 
     public function currentUser(Request $request): JsonResponse
     {
-        return response()->json($request->user());
+        $user_id = auth()->user()->id;
+
+        $user = User::whereId($user_id)->with('roles')->first();
+
+        return response()->json(["user" => $user]);
     }
 
     public function logout(): JsonResponse
