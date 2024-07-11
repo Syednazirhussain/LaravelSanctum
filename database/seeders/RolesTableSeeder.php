@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -12,6 +13,18 @@ class RolesTableSeeder extends Seeder
      */
     public function run(): void
     {
+        $roles = [
+            ['role_name' => 'Admin', 'created_at' => now(), 'updated_at' => now()],
+            ['role_name' => 'Chef', 'created_at' => now(), 'updated_at' => now()],
+            ['role_name' => 'Waiter', 'created_at' => now(), 'updated_at' => now()],
+            ['role_name' => 'Customer', 'created_at' => now(), 'updated_at' => now()],
+        ];
+
+        foreach ($roles as $role) {
+            Role::create($role);
+        }
+        
+        /*
         DB::table('roles')->insert([
             [
                 'role_name' => 'Admin',
@@ -29,5 +42,6 @@ class RolesTableSeeder extends Seeder
                 'updated_at' => '2024-06-20 14:00:00',
             ],
         ]);
+        */
     }
 }

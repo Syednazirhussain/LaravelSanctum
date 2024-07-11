@@ -13,10 +13,12 @@ class RoleMiddleware
     {
         $user = Auth::user();
 
+        /*
         Log::info($user);
         Log::info($user->roles);
         Log::info($user->roles->pluck('role_name')->intersect($roles));
         Log::info($user->roles->pluck('role_name')->intersect($roles)->isNotEmpty());
+        */
         
         if ($user && $user->roles->pluck('role_name')->intersect($roles)->isNotEmpty()) {
             return $next($request);
