@@ -3,34 +3,24 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\MenuItem;
+use App\Models\MenuItemCategory;
 
 class MenuItemsTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        DB::table('menu_items')->insert([
-            [
-                'item_name' => 'Burger',
-                'price' => 8.99,
-                'created_at' => '2024-06-01 10:00:00',
-                'updated_at' => '2024-06-15 12:00:00',
-            ],
-            [
-                'item_name' => 'Salad',
-                'price' => 5.99,
-                'created_at' => '2024-06-05 11:00:00',
-                'updated_at' => '2024-06-18 13:00:00',
-            ],
-            [
-                'item_name' => 'Pasta',
-                'price' => 12.99,
-                'created_at' => '2024-06-10 12:00:00',
-                'updated_at' => '2024-06-20 14:00:00',
-            ],
-        ]);
+        $categories = MenuItemCategory::all();
+
+        $menuItems = [
+            ['item_category_id' => $categories->where('name', 'Burgers')->first()->id, 'img' => 'spring_rolls.jpg', 'name' => 'Spring Rolls', 'price' => 5.99, 'created_at' => now(), 'updated_at' => now()],
+            ['item_category_id' => $categories->where('name', 'Sandwitches')->first()->id, 'img' => 'steak.jpg', 'name' => 'Grilled Steak', 'price' => 19.99, 'created_at' => now(), 'updated_at' => now()],
+            ['item_category_id' => $categories->where('name', 'Desserts')->first()->id, 'img' => 'cheesecake.jpg', 'name' => 'Cheesecake', 'price' => 6.99, 'created_at' => now(), 'updated_at' => now()],
+            ['item_category_id' => $categories->where('name', 'Beverages')->first()->id, 'img' => 'iced_tea.jpg', 'name' => 'Iced Tea', 'price' => 2.99, 'created_at' => now(), 'updated_at' => now()],
+        ];
+
+        foreach ($menuItems as $menuItem) {
+            MenuItem::create($menuItem);
+        }
     }
 }
