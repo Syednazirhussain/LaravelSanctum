@@ -11,10 +11,10 @@ class UsersTableSeeder extends Seeder
 {
     public function run()
     {
-        $adminRole = Role::where('role_name', 'Admin')->first();
-        $chefRole = Role::where('role_name', 'Chef')->first();
-        $waiterRole = Role::where('role_name', 'Waiter')->first();
-        $customerRole = Role::where('role_name', 'Customer')->first();
+        $adminRole = Role::where('name', 'Admin')->first();
+        $chefRole = Role::where('name', 'Chef')->first();
+        $waiterRole = Role::where('name', 'Waiter')->first();
+        $customerRole = Role::where('name', 'Customer')->first();
 
         $users = [
             ['name' => 'Admin User', 'email' => 'admin@example.com', 'password' => Hash::make('password'), 'created_at' => now(), 'updated_at' => now()],

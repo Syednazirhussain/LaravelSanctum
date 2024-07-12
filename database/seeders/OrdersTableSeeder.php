@@ -11,7 +11,7 @@ class OrdersTableSeeder extends Seeder
     public function run()
     {
         $customers = User::whereHas('roles', function($query) {
-            $query->where('role_name', 'Customer');
+            $query->where('name', 'Customer');
         })->get();
 
         foreach ($customers as $customer) {

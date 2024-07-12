@@ -3,36 +3,21 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Permission;
 
 class PermissionsTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        DB::table('permissions')->insert([
-            [
-                'permission_name' => 'Manage Users',
-                'created_at' => '2024-06-01 10:00:00',
-                'updated_at' => '2024-06-15 12:00:00',
-            ],
-            [
-                'permission_name' => 'Manage Menu',
-                'created_at' => '2024-06-05 11:00:00',
-                'updated_at' => '2024-06-18 13:00:00',
-            ],
-            [
-                'permission_name' => 'View Orders',
-                'created_at' => '2024-06-10 12:00:00',
-                'updated_at' => '2024-06-20 14:00:00',
-            ],
-            [
-                'permission_name' => 'Manage Orders',
-                'created_at' => '2024-06-15 13:00:00',
-                'updated_at' => '2024-06-25 15:00:00',
-            ],
-        ]);
+        $permissions = [
+            ['name' => 'Manage Users', 'code' => 'manage_users'],
+            ['name' => 'View Menu', 'code' => 'view_menu'],
+            ['name' => 'Create Orders', 'code' => 'create_orders'],
+            ['name' => 'Manage Menu Items', 'code' => 'manage_menu_items'],
+        ];
+
+        foreach ($permissions as $permission) {
+            Permission::updateOrCreate(['name' => $permission['name']], $permission);
+        }
     }
 }
