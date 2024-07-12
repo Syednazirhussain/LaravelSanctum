@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('permissions', PermissionController::class);
     });
 
-    Route::middleware('role:Admin,Chef')->group(function () {
+    Route::middleware('role:admin,chef')->group(function () {
         Route::apiResource('menu-items', MenuItemController::class);
     });
 });

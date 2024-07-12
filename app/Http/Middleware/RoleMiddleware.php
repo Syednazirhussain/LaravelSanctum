@@ -20,10 +20,10 @@ class RoleMiddleware
         Log::info($user->roles->pluck('role_name')->intersect($roles)->isNotEmpty());
         */
         
-        if ($user && $user->roles->pluck('role_name')->intersect($roles)->isNotEmpty()) {
+        if ($user && $user->roles->pluck('code')->intersect($roles)->isNotEmpty()) {
             return $next($request);
         }
 
-        return response()->json(['message' => 'Forbidden'], 403);
+        return response()->json(['message' => 'Access Forbidden'], 403);
     }
 }
