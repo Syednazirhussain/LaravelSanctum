@@ -2,46 +2,40 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Support\Str;
+use App\Models\User;
+use App\Models\Role;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        DB::table('users')->insert([
-            [
-                'name' => 'Alice',
-                'email' => 'alice@example.com',
-                'email_verified_at' => now(),
-                'password' => Hash::make('hashed_pw1'),
-                'remember_token' => Str::random(10),
-                'created_at' => '2024-06-01 10:00:00',
-                'updated_at' => '2024-06-15 12:00:00',
-            ],
-            [
-                'name' => 'Bob',
-                'email' => 'bob@example.com',
-                'email_verified_at' => now(),
-                'password' => Hash::make('hashed_pw2'),
-                'remember_token' => Str::random(10),
-                'created_at' => '2024-06-05 11:00:00',
-                'updated_at' => '2024-06-18 13:00:00',
-            ],
-            [
-                'name' => 'Charlie',
-                'email' => 'charlie@example.com',
-                'email_verified_at' => now(),
-                'password' => Hash::make('hashed_pw3'),
-                'remember_token' => Str::random(10),
-                'created_at' => '2024-06-10 12:00:00',
-                'updated_at' => '2024-06-20 14:00:00',
-            ],
-        ]);
+        $adminRole = Role::where('role_name', 'Admin')->first();
+        $chefRole = Role::where('role_name', 'Chef')->first();
+        $waiterRole = Role::where('role_name', 'Waiter')->first();
+        $customerRole = Role::where('role_name', 'Customer')->first();
+
+        $users = [
+            ['name' => 'Admin User', 'email' => 'admin@example.com', 'password' => Hash::make('password'), 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Chef User', 'email' => 'chef@example.com', 'password' => Hash::make('password'), 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Waiter User', 'email' => 'waiter@example.com', 'password' => Hash::make('password'), 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Customer User 1', 'email' => 'customer1@example.com', 'password' => Hash::make('password'), 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Customer User 2', 'email' => 'customer2@example.com', 'password' => Hash::make('password'), 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Customer User 3', 'email' => 'customer3@example.com', 'password' => Hash::make('password'), 'created_at' => now(), 'updated_at' => now()],
+        ];
+
+        foreach ($users as $userData) {
+            $user = User::create($userData);
+            if ($user->email == 'admin@example.com') {
+                $user->roles()->attach($adminRole);
+            } elseif ($user->email == 'chef@example.com') {
+                $user->roles()->attach($chefRole);
+            } elseif ($user->email == 'waiter@example.com') {
+                $user->roles()->attach($waiterRole);
+            } else {
+                $user->roles()->attach($customerRole);
+            }
+        }
     }
 }

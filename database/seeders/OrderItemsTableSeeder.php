@@ -3,44 +3,32 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Order;
+use App\Models\MenuItem;
+use App\Models\OrderItem;
 
 class OrderItemsTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    public function run()
     {
-        DB::table('order_items')->insert([
-            [
-                'order_id' => 1,
-                'item_id' => 1,
-                'quantity' => 2,
-                'created_at' => '2024-06-01 10:00:00',
-                'updated_at' => '2024-06-15 12:00:00',
-            ],
-            [
-                'order_id' => 1,
-                'item_id' => 2,
-                'quantity' => 1,
-                'created_at' => '2024-06-01 10:00:00',
-                'updated_at' => '2024-06-15 12:00:00',
-            ],
-            [
-                'order_id' => 2,
-                'item_id' => 2,
-                'quantity' => 3,
-                'created_at' => '2024-06-05 11:00:00',
-                'updated_at' => '2024-06-18 13:00:00',
-            ],
-            [
-                'order_id' => 3,
-                'item_id' => 3,
-                'quantity' => 1,
-                'created_at' => '2024-06-10 12:00:00',
-                'updated_at' => '2024-06-20 14:00:00',
-            ],
-        ]);
+        // Ensure the orders and menu items exist before creating order items
+        $orders = Order::all();
+        $menuItems = MenuItem::all();
+
+        if ($orders->count() == 0 || $menuItems->count() == 0) {
+            $this->command->info('No orders or menu items found, skipping order items seeding.');
+            return;
+        }
+
+        $orderItems = [
+            ['order_id' => $orders[0]->id, 'item_id' => $menuItems[0]->id, 'quantity' => 2, 'created_at' => now(), 'updated_at' => now()],
+            ['order_id' => $orders[0]->id, 'item_id' => $menuItems[1]->id, 'quantity' => 1, 'created_at' => now(), 'updated_at' => now()],
+            ['order_id' => $orders[1]->id, 'item_id' => $menuItems[1]->id, 'quantity' => 3, 'created_at' => now(), 'updated_at' => now()],
+            ['order_id' => $orders[2]->id, 'item_id' => $menuItems[2]->id, 'quantity' => 1, 'created_at' => now(), 'updated_at' => now()],
+        ];
+
+        foreach ($orderItems as $orderItem) {
+            OrderItem::create($orderItem);
+        }
     }
 }
