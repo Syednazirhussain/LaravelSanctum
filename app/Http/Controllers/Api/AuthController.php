@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -50,15 +49,6 @@ class AuthController extends Controller
             'access_token'  => $token,
             'token_type'    => 'Bearer'
         ]);
-    }
-
-    public function currentUser(Request $request): JsonResponse
-    {
-        $user_id = auth()->user()->id;
-
-        $user = User::whereId($user_id)->with(['roles', 'phone', 'address'])->first();
-
-        return response()->json(["user" => $user]);
     }
 
     public function logout(): JsonResponse
