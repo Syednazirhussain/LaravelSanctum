@@ -29,10 +29,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('permissions', PermissionController::class);
     });
 
-    Route::middleware('role:customer,admin,chef')->group(function () {
-        Route::get('menu-items', [MenuItemController::class, 'index']);
-        Route::get('menu-items/{menu_item}', [MenuItemController::class, 'show']);
-    });
+    Route::get('menu-items', [MenuItemController::class, 'index']);
+    Route::get('menu-items/{menu_item}', [MenuItemController::class, 'show']);
 
     Route::middleware('role:admin,chef')->group(function () {
         Route::post('menu-items', [MenuItemController::class, 'store']);
