@@ -58,7 +58,7 @@ class MenuItemCategoryController extends Controller
             $category->img = $imagePath;
         }
 
-        Log::info($request->only('name'));
+        // Log::info($request->only('name'));
 
         $category->update($request->only('name'));
 

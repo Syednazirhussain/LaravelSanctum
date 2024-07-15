@@ -22,15 +22,21 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
+
     Route::get('/user', [AuthController::class, 'currentUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::middleware('admin')->group(function () {
         Route::apiResource('roles', RoleController::class);
         Route::apiResource('permissions', PermissionController::class);
-    });
 
-    Route::apiResource('menu-item-categories', MenuItemCategoryController::class)->middleware('admin');
+        Route::get('menu-item-categories', [MenuItemCategoryController::class, 'index']);
+        Route::get('menu-item-categories/{menu_item_category}', [MenuItemCategoryController::class, 'show']);
+        Route::post('menu-item-categories', [MenuItemCategoryController::class, 'store']);
+        Route::put('menu-item-categories/{menu_item_category}', [MenuItemCategoryController::class, 'update']);
+        Route::delete('menu-item-categories/{menu_item_category}', [MenuItemCategoryController::class, 'destroy']);
+
+    });
 
     Route::get('menu-items', [MenuItemController::class, 'index']);
     Route::get('menu-items/{menu_item}', [MenuItemController::class, 'show']);
