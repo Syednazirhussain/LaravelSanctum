@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\PhoneController;
+use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\MenuItemController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\MenuItemCategoryController;
@@ -32,6 +33,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('phones/{phone}', [PhoneController::class, 'update']);
     Route::patch('phones/{phone}/mark-as-active', [PhoneController::class, 'markAsActive']);
     Route::delete('phones/{phone}', [PhoneController::class, 'destroy']);
+
+    Route::get('addresses', [AddressController::class, 'index']);
+    Route::post('addresses', [AddressController::class, 'store']);
+    Route::put('addresses/{address}', [AddressController::class, 'update']);
+    Route::delete('addresses/{address}', [AddressController::class, 'destroy']);
+    Route::patch('addresses/{address}/mark-as-active', [AddressController::class, 'markAsActive']);
+
 
     Route::middleware('admin')->group(function () {
         Route::apiResource('roles', RoleController::class);
