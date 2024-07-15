@@ -28,7 +28,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     
-    Route::get('/user', [UserController::class, 'currentUser']);
+    Route::get('/user/profile', [UserController::class, 'currentUser']);
+    Route::put('/user/profile', [UserController::class, 'updateProfile']);
 
     Route::get('phones', [PhoneController::class, 'index']);
     Route::post('phones', [PhoneController::class, 'store']);
