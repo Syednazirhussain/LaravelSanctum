@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\MenuItemController;
+use App\Http\Controllers\Api\MenuItemCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('roles', RoleController::class);
         Route::apiResource('permissions', PermissionController::class);
     });
+
+    Route::apiResource('menu-item-categories', MenuItemCategoryController::class)->middleware('admin');
 
     Route::get('menu-items', [MenuItemController::class, 'index']);
     Route::get('menu-items/{menu_item}', [MenuItemController::class, 'show']);
