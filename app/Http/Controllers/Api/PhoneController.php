@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePhoneRequest;
 use App\Http\Requests\UpdatePhoneRequest;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class PhoneController extends Controller
@@ -37,7 +38,7 @@ class PhoneController extends Controller
         return response()->json(["phone" => $phone], 201);
     }
 
-    public function show($id)
+    public function markAsActive($id)
     {
         $phone = Phone::where('user_id', Auth::user()->id)->find($id);
 
@@ -45,7 +46,15 @@ class PhoneController extends Controller
             return response()->json(['message' => 'Phone not found'], 404);
         }
 
-        return response()->json(["phone" => $phone], 200);
+        DB::transaction(function () use ($phone) {
+            if (!$phone->active) {
+                Phone::where('user_id', $phone->user_id)->update(['active' => false]);
+            }
+
+            $phone->update(['active' => true]);
+        });
+
+        return response()->json(['phone' => $phone], 200);
     }
 
     public function update(UpdatePhoneRequest $request, $id)

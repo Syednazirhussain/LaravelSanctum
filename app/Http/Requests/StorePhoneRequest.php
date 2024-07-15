@@ -22,7 +22,7 @@ class StorePhoneRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'slug' => 'required|string|unique:phones,slug',
+            'slug' => 'required|string',
             'code' => 'required|string|max:5',
             'number' => 'required|string|max:15',
             'active' => 'boolean',

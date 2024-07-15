@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('phones', function (Blueprint $table) {
             $table->id();
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->string('code');
             $table->string('number');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->boolean('active')->default(false);
             $table->timestamps();
+
+            $table->unique(['code', 'number']); // Composite unique key
         });
     }
 

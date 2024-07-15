@@ -22,9 +22,9 @@ class UpdatePhoneRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'slug' => 'sometimes|string|unique:phones,slug,' . $this->route('phone'),
-            'code' => 'sometimes|string|max:5',
-            'number' => 'sometimes|string|max:15',
+            'slug' => 'required|string',
+            'code' => 'required|string|max:5',
+            'number' => 'required|string|max:15',
             'active' => 'boolean',
         ];
     }
