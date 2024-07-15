@@ -14,8 +14,10 @@ class UpdateMenuItemRequest extends FormRequest
     public function rules()
     {
         return [
-            'item_name' => 'required|string|max:255',
-            'price' => 'required|numeric|min:0',
+            'name' => 'sometimes|string|max:255',
+            'price' => 'sometimes|numeric|min:0',
+            'item_category_id' => 'sometimes|exists:menu_item_categories,id',
+            'img' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:5120',
         ];
     }
 

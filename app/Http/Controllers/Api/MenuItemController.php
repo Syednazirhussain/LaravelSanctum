@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreMenuItemRequest;
 use App\Http\Requests\UpdateMenuItemRequest;
 
+use Illuminate\Support\Facades\Storage;
+
 class MenuItemController extends Controller
 {
     public function index()
@@ -17,9 +19,16 @@ class MenuItemController extends Controller
 
     public function store(StoreMenuItemRequest $request)
     {
-        $menuItem = MenuItem::create($request->validated());
+        $imagePath = $request->file('img')->store('menu-items', 'public');
+        
+        $menuItem = MenuItem::create([
+            'name' => $request->input('name'),
+            'price' => $request->input('price'),
+            'item_category_id' => $request->input('item_category_id'),
+            'img' => $imagePath,
+        ]);
 
-        return response()->json($menuItem, 201);
+        return response()->json(["menuItem" => $menuItem], 201);
     }
 
     public function show($id)
@@ -27,10 +36,10 @@ class MenuItemController extends Controller
         $menuItem = MenuItem::find($id);
 
         if (!$menuItem) {
-            return response()->json(['message' => 'MenuItem not found'], 404);
+            return response()->json(['message' => 'Menu Item not found'], 404);
         }
 
-        return response()->json($menuItem);
+        return response()->json(["menuItem" => $menuItem], 200);
     }
 
     public function update(UpdateMenuItemRequest $request, $id)
@@ -38,12 +47,21 @@ class MenuItemController extends Controller
         $menuItem = MenuItem::find($id);
 
         if (!$menuItem) {
-            return response()->json(['message' => 'MenuItem not found'], 404);
+            return response()->json(['message' => 'Menu Item not found'], 404);
         }
 
-        $menuItem->update($request->validated());
+        if ($request->hasFile('img')) {
+            if ($menuItem->img) {
+                Storage::disk('public')->delete($menuItem->img);
+            }
 
-        return response()->json($menuItem);
+            $imagePath = $request->file('img')->store('menu-items', 'public');
+            $menuItem->img = $imagePath;
+        }
+
+        $menuItem->update($request->only('name', 'price', 'item_category_id'));
+
+        return response()->json(["menuItem" => $menuItem], 200);
     }
 
     public function destroy($id)
@@ -51,11 +69,15 @@ class MenuItemController extends Controller
         $menuItem = MenuItem::find($id);
 
         if (!$menuItem) {
-            return response()->json(['message' => 'MenuItem not found'], 404);
+            return response()->json(['message' => 'Menu Item not found'], 404);
+        }
+
+        if ($menuItem->img) {
+            Storage::disk('public')->delete($menuItem->img);
         }
 
         $menuItem->delete();
 
-        return response()->json(['message' => 'MenuItem deleted']);
+        return response()->json(['message' => 'Menu Item deleted']);
     }
 }

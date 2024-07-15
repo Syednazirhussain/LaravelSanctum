@@ -18,6 +18,13 @@ class MenuItem extends Model
         'price',
     ];
 
+    protected $appends = ['img_url'];
+
+    public function getImgUrlAttribute()
+    {
+        return $this->img ? asset('storage/' . $this->img) : null;
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(MenuItemCategory::class, 'item_category_id');
