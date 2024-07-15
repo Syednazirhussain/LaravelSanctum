@@ -20,11 +20,4 @@ class UpdateMenuItemRequest extends FormRequest
             'img' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:5120',
         ];
     }
-
-    protected function prepareForValidation()
-    {
-        if ($this->header('Content-Type') !== 'application/json') {
-            abort(415, 'Unsupported Media Type. Content-Type must be application/json.');
-        }
-    }
 }
