@@ -8,13 +8,13 @@ class StoreRoleRequest extends FormRequest
 {
     public function authorize()
     {
-        return true; // You might want to add authorization logic here
+        return true;
     }
 
     public function rules()
     {
         return [
-            'role_name' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
         ];
     }
 

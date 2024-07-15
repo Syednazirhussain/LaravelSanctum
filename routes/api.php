@@ -35,7 +35,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('menu-item-categories', [MenuItemCategoryController::class, 'store']);
         Route::put('menu-item-categories/{menu_item_category}', [MenuItemCategoryController::class, 'update']);
         Route::delete('menu-item-categories/{menu_item_category}', [MenuItemCategoryController::class, 'destroy']);
-
     });
 
     Route::get('menu-items', [MenuItemController::class, 'index']);
