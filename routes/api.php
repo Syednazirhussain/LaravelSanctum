@@ -3,8 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\RoleController;
-use App\Http\Controllers\Api\PermissionController;
+use App\Http\Controllers\Api\PhoneController;
 use App\Http\Controllers\Api\MenuItemController;
+use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\MenuItemCategoryController;
 
 /*
@@ -26,10 +27,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'currentUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
+    Route::get('phones', [PhoneController::class, 'index']);
+    Route::post('phones', [PhoneController::class, 'store']);
+    Route::get('phones/{phone}', [PhoneController::class, 'show']);
+    Route::put('phones/{phone}', [PhoneController::class, 'update']);
+    Route::delete('phones/{phone}', [PhoneController::class, 'destroy']);
+
     Route::middleware('admin')->group(function () {
         Route::apiResource('roles', RoleController::class);
         Route::apiResource('permissions', PermissionController::class);
+    });
 
+    Route::middleware('admin')->group(function () {
         Route::get('menu-item-categories', [MenuItemCategoryController::class, 'index']);
         Route::get('menu-item-categories/{menu_item_category}', [MenuItemCategoryController::class, 'show']);
         Route::post('menu-item-categories', [MenuItemCategoryController::class, 'store']);
@@ -44,5 +53,6 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('menu-items', [MenuItemController::class, 'store']);
         Route::put('menu-items/{menu_item}', [MenuItemController::class, 'update']);
         Route::delete('menu-items/{menu_item}', [MenuItemController::class, 'destroy']);
-    });
+    });    
+
 });
