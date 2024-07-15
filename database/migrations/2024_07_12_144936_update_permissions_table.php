@@ -9,7 +9,6 @@ class UpdatePermissionsTable extends Migration
     public function up()
     {
         Schema::table('permissions', function (Blueprint $table) {
-            // $table->renameColumn('permission_name', 'name');
             $table->string('code')->after('name');
         });
     }
@@ -17,7 +16,6 @@ class UpdatePermissionsTable extends Migration
     public function down()
     {
         Schema::table('permissions', function (Blueprint $table) {
-            // $table->renameColumn('name', 'permission_name');
             $table->dropColumn('code');
         });
     }
