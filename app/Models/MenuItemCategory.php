@@ -14,6 +14,13 @@ class MenuItemCategory extends Model
         'name',
         'img',
     ];
+    
+    protected $appends = ['img_url'];
+
+    public function getImgUrlAttribute()
+    {
+        return $this->img ? asset('storage/' . $this->img) : null;
+    }
 
     public function menuItems(): HasMany
     {

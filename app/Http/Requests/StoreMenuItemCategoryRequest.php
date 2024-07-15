@@ -23,7 +23,7 @@ class StoreMenuItemCategoryRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'img' => 'required|string|max:255',
+            'img' => 'required|image|mimes:jpeg,png,jpg|max:5120',
         ];
     }
 }

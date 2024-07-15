@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreMenuItemCategoryRequest;
 use App\Http\Requests\UpdateMenuItemCategoryRequest;
 
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+
 class MenuItemCategoryController extends Controller
 {
     public function index()
@@ -17,7 +20,12 @@ class MenuItemCategoryController extends Controller
 
     public function store(StoreMenuItemCategoryRequest $request)
     {
-        $category = MenuItemCategory::create($request->validated());
+        $imagePath = $request->file('img')->store('menu-item-category', 'public');
+
+        $category = MenuItemCategory::create([
+            'name' => $request->input('name'),
+            'img' => $imagePath,
+        ]);
 
         return response()->json(["category" => $category], 201);
     }
@@ -38,10 +46,21 @@ class MenuItemCategoryController extends Controller
         $category = MenuItemCategory::find($id);
 
         if (!$category) {
-            return response()->json(['message' => 'Menu Item Category not found'], 404);
+            return response()->json(['message' => 'MenuItemCategory not found'], 404);
         }
 
-        $category->update($request->validated());
+        if ($request->hasFile('img')) {
+            if ($category->img) {
+                Storage::disk('public')->delete($category->img);
+            }
+
+            $imagePath = $request->file('img')->store('menu-item-category', 'public');
+            $category->img = $imagePath;
+        }
+
+        Log::info($request->only('name'));
+
+        $category->update($request->only('name'));
 
         return response()->json(["category" => $category], 200);
     }
