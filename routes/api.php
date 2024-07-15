@@ -31,8 +31,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('phones', [PhoneController::class, 'index']);
     Route::post('phones', [PhoneController::class, 'store']);
     Route::put('phones/{phone}', [PhoneController::class, 'update']);
-    Route::patch('phones/{phone}/mark-as-active', [PhoneController::class, 'markAsActive']);
     Route::delete('phones/{phone}', [PhoneController::class, 'destroy']);
+    Route::patch('phones/{phone}/mark-as-active', [PhoneController::class, 'markAsActive']);
 
     Route::get('addresses', [AddressController::class, 'index']);
     Route::post('addresses', [AddressController::class, 'store']);
