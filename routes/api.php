@@ -29,7 +29,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('permissions', PermissionController::class);
     });
 
+    Route::middleware('role:customer,admin,chef')->group(function () {
+        Route::get('menu-items', [MenuItemController::class, 'index']);
+        Route::get('menu-items/{menu_item}', [MenuItemController::class, 'show']);
+    });
+
     Route::middleware('role:admin,chef')->group(function () {
-        Route::apiResource('menu-items', MenuItemController::class);
+        Route::post('menu-items', [MenuItemController::class, 'store']);
+        Route::put('menu-items/{menu_item}', [MenuItemController::class, 'update']);
+        Route::delete('menu-items/{menu_item}', [MenuItemController::class, 'destroy']);
     });
 });
