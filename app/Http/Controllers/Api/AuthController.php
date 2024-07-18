@@ -64,7 +64,6 @@ class AuthController extends Controller
 
     public function forgotPassword(ForgotPasswordRequest $request): JsonResponse
     {
-        Log::info($request->all());
         $status = Password::sendResetLink($request->only('email'));
 
         if ($status === Password::RESET_LINK_SENT) {
@@ -75,9 +74,7 @@ class AuthController extends Controller
     }
 
     public function resetPasswordWithToken(ForgotPasswordResetRequest $request): JsonResponse
-    {
-        Log::info($request->only('email', 'token', 'password', 'password_confirmation'));
-    
+    {    
         $status = Password::reset(
             $request->only('email', 'token', 'password', 'password_confirmation'),
             function ($user, $password) {
