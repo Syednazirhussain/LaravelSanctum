@@ -41,7 +41,7 @@ class AuthController extends Controller
 
         if (!Auth::attempt($credentials)) {
             return response()->json([
-                'message' => 'User not found'
+                'message' => 'Invalid credentials'
             ], 401);
         }
 
