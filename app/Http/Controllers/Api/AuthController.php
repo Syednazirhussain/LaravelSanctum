@@ -12,6 +12,7 @@ use App\Http\Requests\ForgotPasswordRequest;
 use App\Http\Requests\ForgotPasswordResetRequest;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -71,6 +72,11 @@ class AuthController extends Controller
         }
 
         return response()->json(['message' => 'Unable to send reset link'], 500);
+    }
+
+    public function showResetForm(Request $request, $token)
+    {
+        return view('auth.reset-password', ['token' => $token, 'email' => $request->email]);
     }
 
     public function resetPasswordWithToken(ForgotPasswordResetRequest $request): JsonResponse
