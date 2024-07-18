@@ -30,6 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
     
     Route::get('/user/profile', [UserController::class, 'currentUser']);
     Route::put('/user/profile', [UserController::class, 'updateProfile']);
+    Route::put('/user/password', [UserController::class, 'resetPassword']);
 
     Route::get('phones', [PhoneController::class, 'index']);
     Route::post('phones', [PhoneController::class, 'store']);
