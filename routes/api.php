@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\PhoneController;
@@ -8,7 +9,6 @@ use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\MenuItemController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\MenuItemCategoryController;
-use App\Http\Controllers\Api\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +24,7 @@ use App\Http\Controllers\Api\UserController;
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
-Route::put('/reset-password', [AuthController::class, 'resetPasswordWithToken'])->name('password.update');
+Route::put('/forgot-password-reset', [AuthController::class, 'resetPasswordWithToken'])->name('password.update');
 
 Route::middleware('auth:sanctum')->group(function () {
 

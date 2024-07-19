@@ -68,7 +68,7 @@ class AuthController extends Controller
                 'access_token'  => $token,
                 'token_type'    => 'Bearer'
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error($e->getMessage());
             DB::rollBack();
             return response()->json(['message' => 'Registration failed'], 500);
