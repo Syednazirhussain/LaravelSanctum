@@ -23,14 +23,15 @@ use App\Http\Controllers\Api\MenuItemCategoryController;
 
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
+
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::put('/forgot-password-reset', [AuthController::class, 'resetPasswordWithToken'])->name('password.update');
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
+    ->middleware(['signed', 'throttle:6,1'])
+    ->name('verification.verify');
 
-    Route::get('/email/verify/{id}/{hash}', [AuthController::class, 'verifyEmail'])
-        ->middleware(['signed', 'throttle:6,1'])
-        ->name('verification.verify');
+Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/email/resend', [AuthController::class, 'resendVerificationEmail'])
         ->middleware(['throttle:6,1'])
@@ -53,7 +54,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('addresses/{address}', [AddressController::class, 'update']);
     Route::delete('addresses/{address}', [AddressController::class, 'destroy']);
     Route::patch('addresses/{address}/mark-as-active', [AddressController::class, 'markAsActive']);
-
 
     Route::middleware('admin')->group(function () {
         Route::apiResource('roles', RoleController::class);

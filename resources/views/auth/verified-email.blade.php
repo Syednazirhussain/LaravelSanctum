@@ -18,20 +18,9 @@
                 </svg>
             </div>
             <div class="col-md-6">
-                <form id="resetPwdForm">
-                    <input type="hidden" name="token" value="@if(isset($token)){{ $token }}@endif">
-                    <input type="hidden" name="email" value="@if(isset($email)){{ $email }}@endif">
-
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" maxlength="8" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="confirm_password" class="form-label">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirm_password" name="password_confirmation" maxlength="8" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Reset Password</button>
-                </form>
+                <div class="alert alert-primary" role="alert">
+                    Email verified successfully, Please <a href="javascript:void(0);" class="alert-link">login</a> and get notification on your email.
+                </div>
             </div>
         </div>
     </div>
@@ -47,32 +36,21 @@
 
         $(document).ready(function() {
 
-            $("#resetPwdForm").submit(function(e) {
+            let url = "{!! request()->query('url') !!}";
 
-                e.preventDefault();
+            $.ajax({
+                    url,
+                    type: 'GET',
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader('Accept', 'application/json');
+                    },
 
-                let inputs = $(this).serializeArray();
-
-                let data = {};
-                inputs.forEach((item, index) => {
-                    data[item.name] = item.value;
+                }).done((response) => {
+                    alert(response.message);
+                })
+                .fail((error) => {
+                    alert(error.responseJSON.message)
                 });
-
-                data['_method'] = "PUT";
-                console.log(data);
-
-                $.ajax({
-                        url: '{{ route("password.update") }}',
-                        type: 'POST',
-                        data: data,
-                    }).done((response) => {
-                        alert(response.message);
-                        $(this).trigger("reset");
-                    })
-                    .fail((error) => {
-                        alert(error.responseJSON.message)
-                    });
-            });
         });
     </script>
 </body>
