@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\PhoneController;
 use App\Http\Controllers\Api\AddressController;
+use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\MenuItemController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\MenuItemCategoryController;
@@ -39,6 +40,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     
+    Route::middleware('admin')->group(function () {
+        Route::post('add-user', [AdminController::class, 'addUser']);
+    });
+
     Route::get('/user/profile', [UserController::class, 'currentUser']);
     Route::put('/user/profile', [UserController::class, 'updateProfile']);
     Route::put('/user/password', [UserController::class, 'resetPassword']);
