@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 
 class VerifyEmail extends Notification implements ShouldQueue
@@ -41,16 +42,19 @@ class VerifyEmail extends Notification implements ShouldQueue
             ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification())]
         );
 
+        /*
         return (new MailMessage)
                     ->line('Please click the button below to verify your email address.')
                     ->action('Verify Email', $verificationUrl)
                     ->line('If you did not create an account, no further action is required.');
+        */
         
-        /* Not working
         return (new MailMessage)
             ->subject('Verify Email Address')
-            ->view('mail.verify-email', ['url' => $verificationUrl]);
-        */
+            ->markdown('mail.verify-email', [
+                'url'   => $verificationUrl,
+                'name'  => $notifiable->name
+            ]);
     }
 
     /**
