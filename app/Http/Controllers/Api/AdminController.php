@@ -11,6 +11,7 @@ use App\Models\UserProfile;
 use App\Events\NewUserEvent;
 
 use App\Http\Requests\AddUserRequest;
+use App\Http\Requests\AnnouncementRequest;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 use App\Http\Controllers\Controller;
+use App\Notifications\AnnouncementNotification;
 use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
@@ -66,4 +68,35 @@ class AdminController extends Controller
             return response()->json();
         }
     }
+
+    public function sendNotification(AnnouncementRequest $request)
+    {
+        $subject    = $request->input('subject');
+        $message    = $request->input('message');
+        $notifyTo   = $request->input('notify_to');
+        $notifyVia  = $request->input('notify_via');
+
+        try {
+            if ($notifyTo === 'all') {
+                $roles = ['chef', 'waiter'];
+            } else {
+                $roles = [$notifyTo];
+            }
+
+            $users = User::whereHas('roles', function($query) use ($roles) {
+                $query->whereIn('name', $roles);
+            })->get();
+
+            foreach ($users as $user) {
+                // Log::info($user);
+                $user->notify(new AnnouncementNotification($subject, $message, $notifyVia));
+            }
+
+            return response()->json(['message' => 'Notifications sent successfully.'], 200);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['message' => 'Failed to send notifications.'], 500);
+        }
+    }
+
 }

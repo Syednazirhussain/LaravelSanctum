@@ -42,6 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
     
     Route::middleware('admin')->group(function () {
         Route::post('add-user', [AdminController::class, 'addUser']);
+        Route::post('/send-notification', [AdminController::class, 'sendNotification']);
     });
 
     Route::get('/user/profile', [UserController::class, 'currentUser']);
