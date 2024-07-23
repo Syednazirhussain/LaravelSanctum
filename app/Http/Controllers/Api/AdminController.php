@@ -88,7 +88,6 @@ class AdminController extends Controller
             })->get();
 
             foreach ($users as $user) {
-                // Log::info($user);
                 $user->notify(new AnnouncementNotification($subject, $message, $notifyVia));
             }
 
