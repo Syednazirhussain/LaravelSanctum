@@ -11,6 +11,7 @@ use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class NewUserRegisterationEmail extends Mailable
 {
@@ -31,8 +32,21 @@ class NewUserRegisterationEmail extends Mailable
      */
     public function envelope(): Envelope
     {
+        $admin = User::whereHas('roles', function($query) {
+            $query->where('code', 'admin');
+        })->first();
+
+        $name = config('mail.from.name');
+        $email = config('mail.from.address');
+        
+        if ($admin !== null) {
+            
+            $name   = $admin->name;
+            $email  = $admin->email;
+        }
+
         return new Envelope(
-            from: new Address('jeffrey@example.com', 'Jeffrey Way'),
+            from: new Address($email, $name),
             subject: 'New User Registered',
         );
     }

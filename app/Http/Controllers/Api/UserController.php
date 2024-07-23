@@ -17,7 +17,7 @@ class UserController extends Controller
     public function currentUser(): JsonResponse
     {
         $user_id = auth()->user()->id;
-        $user = User::whereId($user_id)->with(['profile', 'phone', 'address'])->first();
+        $user = User::whereId($user_id)->with(['profile', 'phone', 'address', 'roles'])->first();
 
         return response()->json(["user" => $user]);
     }

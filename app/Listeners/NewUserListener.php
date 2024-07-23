@@ -9,7 +9,7 @@ use App\Mail\NewUserRegisterationEmail;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class NewUserListener
+class NewUserListener implements ShouldQueue
 {
     /**
      * Create the event listener.
