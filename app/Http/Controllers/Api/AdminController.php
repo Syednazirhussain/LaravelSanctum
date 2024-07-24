@@ -17,10 +17,11 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+
+use App\Notifications\AnnouncementNotification;
 
 use App\Http\Controllers\Controller;
-use App\Notifications\AnnouncementNotification;
-use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -77,12 +78,8 @@ class AdminController extends Controller
         $notifyVia  = $request->input('notify_via');
 
         try {
-            if ($notifyTo === 'all') {
-                $roles = ['chef', 'waiter'];
-            } else {
-                $roles = [$notifyTo];
-            }
 
+            $roles = ($notifyTo === 'all') ? ['chef', 'waiter'] : [$notifyTo];
             $users = User::whereHas('roles', function($query) use ($roles) {
                 $query->whereIn('name', $roles);
             })->get();

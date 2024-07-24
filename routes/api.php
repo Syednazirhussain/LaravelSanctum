@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\MenuItemController;
 use App\Http\Controllers\Api\PermissionController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\MenuItemCategoryController;
 
 /*
@@ -44,6 +45,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('add-user', [AdminController::class, 'addUser']);
         Route::post('/send-notification', [AdminController::class, 'sendNotification']);
     });
+
+    Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::put('/notifications/{id}/read', [NotificationController::class, 'read']);
+    Route::put('/notifications/read-all', [NotificationController::class, 'readAll']);
 
     Route::get('/user/profile', [UserController::class, 'currentUser']);
     Route::put('/user/profile', [UserController::class, 'updateProfile']);
