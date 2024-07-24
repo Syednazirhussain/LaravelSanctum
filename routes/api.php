@@ -23,9 +23,8 @@ use App\Http\Controllers\Api\MenuItemCategoryController;
 |
 */
 
-Route::post('/auth/register', [AuthController::class, 'register']);
-Route::post('/auth/login', [AuthController::class, 'login'])->name('login');
-
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::put('/forgot-password-reset', [AuthController::class, 'resetPasswordWithToken'])->name('password.update');
 
