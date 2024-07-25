@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+use Illuminate\Notifications\Notification as BaseNotification;
+
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -65,20 +67,28 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Route notifications for the Vonage channel.
+     */
+    public function routeNotificationForVonage(BaseNotification $notification): string
+    {
+        return $this->phone ? $this->phone->code . $this->phone->number : '';
+    }
+
+    /**
      * Get all of the user's notifications.
      */
     public function notifications(): MorphMany
     {
-        return $this->morphMany(Notification::class, 'notifiable')
+        return $this->morphMany(\App\Models\Notification::class, 'notifiable')
             ->orderBy('created_at', 'desc');
     }
 
     /**
      * Get all of the user's read notifications.
      */
-    public function readNotifications(): MorphMany
+    public function readNotifications()
     {
-        return $this->notifications()->read();
+        return $this->notifications()->whereNotNull('read_at');
     }
 
     /**
@@ -86,7 +96,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function unreadNotifications()
     {
-        return $this->notifications()->unread();
+        return $this->notifications()->whereNull('read_at');
     }
 
     public function profile(): HasOne

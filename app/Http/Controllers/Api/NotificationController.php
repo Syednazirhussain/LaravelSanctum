@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\User;
 use App\Models\Notification;
+
 use Illuminate\Http\JsonResponse;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Log;
 
 class NotificationController extends Controller
 {
     public function index(): JsonResponse
     {
-        $notifications = Notification::paginate(10);
+        $notifications = Notification::where('notifiable_id', auth()->user()->id)
+            ->where('notifiable_type', User::class)
+            ->paginate(10);
+            
         return response()->json(['notifications' => $notifications]);
     }
 

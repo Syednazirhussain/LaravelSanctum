@@ -5,6 +5,8 @@ namespace App\Notifications;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\VonageMessage;
+
 use Illuminate\Notifications\Notification;
 
 class AnnouncementNotification extends Notification implements ShouldQueue
@@ -51,6 +53,15 @@ class AnnouncementNotification extends Notification implements ShouldQueue
         return (new MailMessage)
             ->subject($this->subject)
             ->line($this->message);
+    }
+
+    /**
+     * Get the Vonage / SMS representation of the notification.
+     */
+    public function toVonage(object $notifiable): VonageMessage
+    {
+        return (new VonageMessage)
+            ->content($this->message);
     }
 
     /**

@@ -24,7 +24,7 @@ class AnnouncementRequest extends FormRequest
         return [
             'subject'    => 'required|string|max:45',
             'message'    => 'required|string|max:255',
-            'notify_via' => 'required|array|in:mail,database|min:1',
+            'notify_via' => 'required|array|in:mail,database,vonage|min:1',
             'notify_to'  => 'required|string|in:all,waiter,chef',
         ];
     }
