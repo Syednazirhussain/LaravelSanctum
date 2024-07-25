@@ -50,9 +50,11 @@ class AnnouncementNotification extends Notification implements ShouldQueue
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
-            ->subject($this->subject)
-            ->line($this->message);
+        return (new MailMessage)->subject($this->subject)
+                                ->view('mail.announcement.promotion', [
+                                    'name' => $notifiable->name,
+                                    'body' => $this->message
+                                ]);
     }
 
     /**
