@@ -38,7 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
         ->middleware(['throttle:6,1'])
         ->name('verification.send');
 
-    Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::post('/logout', [AuthController::class, 'logout']);
     
     Route::middleware('admin')->group(function () {
         Route::post('add-user', [AdminController::class, 'addUser']);
@@ -52,6 +52,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user/profile', [UserController::class, 'currentUser']);
     Route::put('/user/profile', [UserController::class, 'updateProfile']);
     Route::put('/user/password', [UserController::class, 'resetPassword']);
+    Route::post('/user/device-token', [UserController::class, 'addDeviceToken']);
+    Route::delete('/user/device-token', [UserController::class, 'removeDeviceToken']);
 
     Route::get('phones', [PhoneController::class, 'index']);
     Route::post('phones', [PhoneController::class, 'store']);

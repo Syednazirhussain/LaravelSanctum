@@ -4,24 +4,28 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use App\Models\UserProfile;
+use App\Models\DeviceToken;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\ProfileUpdateRequest;
-use App\Http\Requests\ResetPasswordRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+
+use App\Http\Requests\DeviceTokenRequest;
+use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\ResetPasswordRequest;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
     public function currentUser(): JsonResponse
     {
-        $user_id = auth()->user()->id;
-        $user = User::whereId($user_id)->with(['profile', 'phone', 'address', 'roles'])->first();
+        $user_id = Auth::user()->id;
+        $user = User::whereId($user_id)->with(['profile', 'deviceTokens', 'phone', 'address', 'roles'])->first();
 
         return response()->json(["user" => $user]);
     }
-
 
     public function updateProfile(ProfileUpdateRequest $request)
     {
@@ -54,5 +58,34 @@ class UserController extends Controller
         $user->update(['password' => Hash::make($request->new_password)]);
 
         return response()->json(['message' => 'Password reset successful']);
+    }
+
+    public function addDeviceToken(DeviceTokenRequest $request): JsonResponse
+    {
+        $user = Auth::user();
+
+        $deviceToken = DeviceToken::updateOrCreate(
+            ['user_id' => $user->id, 'type' => $request->type],
+            ['token' => $request->token]
+        );
+
+        return response()->json(['message' => 'Device token added successfully', 'deviceToken' => $deviceToken]);
+    }
+
+    public function removeDeviceToken(DeviceTokenRequest $request): JsonResponse
+    {
+        $user = Auth::user();
+
+        $deviceToken = DeviceToken::where('user_id', $user->id)
+            ->where('type', $request->type)
+            ->where('token', $request->token)
+            ->first();
+
+        if ($deviceToken) {
+            $deviceToken->delete();
+            return response()->json(['message' => 'Device token removed successfully']);
+        }
+
+        return response()->json(['message' => 'Device token not found'], 404);
     }
 }

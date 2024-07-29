@@ -99,6 +99,50 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->notifications()->whereNull('read_at');
     }
 
+    /**
+     * Get the device tokens for the user.
+     */
+    public function deviceTokens(): HasMany
+    {
+        return $this->hasMany(DeviceToken::class, 'user_id', 'id');
+    }
+
+    /**
+     * Get the device tokens for the user filtered by type.
+     *
+     * @param string $type
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getDeviceTokensByType($type)
+    {
+        return $this->deviceTokens()->ofType($type)->get();
+    }
+
+    /**
+     * Delete all device tokens for the user.
+     *
+     * @return void
+     */
+    public function deleteDeviceTokens()
+    {
+        $this->deviceTokens()->delete();
+    }
+
+    /**
+     * Add a new device token for the user.
+     *
+     * @param string $type
+     * @param string $token
+     * @return \App\Models\DeviceToken
+     */
+    public function addDeviceToken($type, $token)
+    {
+        return $this->deviceTokens()->create([
+            'type' => $type,
+            'token' => $token,
+        ]);
+    }
+
     public function profile(): HasOne
     {
         return $this->hasOne(UserProfile::class, 'user_id');
