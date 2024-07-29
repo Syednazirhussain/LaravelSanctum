@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\PhoneController;
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\MenuItemController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\NotificationController;
@@ -87,6 +88,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('menu-items', [MenuItemController::class, 'store']);
         Route::put('menu-items/{menu_item}', [MenuItemController::class, 'update']);
         Route::delete('menu-items/{menu_item}', [MenuItemController::class, 'destroy']);
-    });    
+    });
+
+    Route::middleware(['order'])->group(function () {
+        Route::post('/orders', [OrderController::class, 'create'])->middleware("role:waiter,customer");
+    });
+    
 
 });
