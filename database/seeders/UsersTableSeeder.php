@@ -2,10 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
 use App\Models\Role;
-use Illuminate\Database\Seeder;
+use App\Models\User;
+use App\Models\UserProfile;
+
 use Illuminate\Support\Facades\Hash;
+
+use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
 {
@@ -27,6 +30,7 @@ class UsersTableSeeder extends Seeder
 
         foreach ($users as $userData) {
             $user = User::create($userData);
+
             if ($user->email == 'admin@example.com') {
                 $user->roles()->attach($adminRole);
             } elseif ($user->email == 'chef@example.com') {
@@ -36,6 +40,13 @@ class UsersTableSeeder extends Seeder
             } else {
                 $user->roles()->attach($customerRole);
             }
+
+            $defaultProfileImage = 'profile-images/default.jpeg';
+
+            UserProfile::create([
+                'user_id' => $user->id,
+                'profile_img' => $defaultProfileImage,
+            ]);
         }
     }
 }

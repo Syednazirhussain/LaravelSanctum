@@ -11,12 +11,13 @@ class OrdersTableSeeder extends Seeder
     public function run()
     {
         $customers = User::whereHas('roles', function($query) {
-            $query->where('name', 'Customer');
+            $query->where('code', 'customer');
         })->get();
 
         foreach ($customers as $customer) {
             Order::create([
                 'user_id' => $customer->id,
+                'type' => 'delivery',
                 'order_date' => now(),
                 'status' => 'pending',
                 'created_at' => now(),
