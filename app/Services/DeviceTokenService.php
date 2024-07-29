@@ -3,31 +3,24 @@
 namespace App\Services;
 
 use App\Models\DeviceToken;
+use App\Contracts\DeviceTokenServiceInterface;
 
-class DeviceTokenService
+class DeviceTokenService implements DeviceTokenServiceInterface
 {
-    public function addDeviceToken($userId, $type, $token)
+    public function addDeviceToken(int $userId, string $type, string $token): DeviceToken
     {
         $deviceToken = DeviceToken::updateOrCreate(
-            ['user_id' => $userId, 'type' => $type],
-            ['token' => $token]
+            ['user_id' => $userId, 'type' => $type, 'token' => $token],
+            ['created_at' => now()]
         );
 
         return $deviceToken;
     }
 
-    public function removeDeviceToken($userId, $type, $token)
+    public function removeDeviceToken(int $userId, string $token): bool
     {
-        $deviceToken = DeviceToken::where('user_id', $userId)
-            ->where('type', $type)
+        return DeviceToken::where('user_id', $userId)
             ->where('token', $token)
-            ->first();
-
-        if ($deviceToken) {
-            $deviceToken->delete();
-            return true;
-        }
-
-        return false;
+            ->delete() > 0;
     }
 }

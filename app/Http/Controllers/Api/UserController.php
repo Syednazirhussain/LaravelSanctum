@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\UserProfile;
 use App\Models\DeviceToken;
 
-use App\Services\DeviceTokenService;
+use App\Contracts\DeviceTokenServiceInterface;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
@@ -23,7 +23,7 @@ class UserController extends Controller
 {
     protected $deviceTokenService;
 
-    public function __construct(DeviceTokenService $deviceTokenService)
+    public function __construct(DeviceTokenServiceInterface $deviceTokenService)
     {
         $this->deviceTokenService = $deviceTokenService;
     }

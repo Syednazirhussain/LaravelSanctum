@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Services\DeviceTokenService;
+use App\Contracts\DeviceTokenServiceInterface;
+
 use Illuminate\Support\ServiceProvider;
 
 class DeviceTokenServiceProvider extends ServiceProvider
@@ -12,9 +14,7 @@ class DeviceTokenServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(DeviceTokenService::class, function ($app) {
-            return new DeviceTokenService();
-        });
+        $this->app->singleton(DeviceTokenServiceInterface::class, DeviceTokenService::class);
     }
 
     /**
