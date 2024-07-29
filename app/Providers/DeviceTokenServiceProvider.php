@@ -2,24 +2,23 @@
 
 namespace App\Providers;
 
+use App\Services\DeviceTokenService;
 use Illuminate\Support\ServiceProvider;
 
-class AppServiceProvider extends ServiceProvider
+class DeviceTokenServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * Register services.
      */
     public function register(): void
     {
-        /* Singleton service provider
         $this->app->singleton(DeviceTokenService::class, function ($app) {
             return new DeviceTokenService();
         });
-        */
     }
 
     /**
-     * Bootstrap any application services.
+     * Bootstrap services.
      */
     public function boot(): void
     {
