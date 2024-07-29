@@ -6,7 +6,10 @@ use App\Models\User;
 use App\Models\UserProfile;
 use App\Models\DeviceToken;
 
+use App\Services\DeviceTokenService;
+
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -15,10 +18,16 @@ use App\Http\Requests\ProfileUpdateRequest;
 use App\Http\Requests\ResetPasswordRequest;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
+    protected $deviceTokenService;
+
+    public function __construct(DeviceTokenService $deviceTokenService)
+    {
+        $this->deviceTokenService = $deviceTokenService;
+    }
+
     public function currentUser(): JsonResponse
     {
         $user_id = Auth::user()->id;
@@ -64,10 +73,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
 
-        $deviceToken = DeviceToken::updateOrCreate(
-            ['user_id' => $user->id, 'type' => $request->type],
-            ['token' => $request->token]
-        );
+        $deviceToken = $this->deviceTokenService->addDeviceToken($user->id, $request->type, $request->token);
 
         return response()->json(['message' => 'Device token added successfully', 'deviceToken' => $deviceToken]);
     }
@@ -76,16 +82,14 @@ class UserController extends Controller
     {
         $user = Auth::user();
 
-        $deviceToken = DeviceToken::where('user_id', $user->id)
-            ->where('type', $request->type)
-            ->where('token', $request->token)
-            ->first();
+        $isRemoved = $this->deviceTokenService->removeDeviceToken($user->id, $request->type, $request->token);
 
-        if ($deviceToken) {
-            $deviceToken->delete();
+        if ($isRemoved) {
             return response()->json(['message' => 'Device token removed successfully']);
         }
 
         return response()->json(['message' => 'Device token not found'], 404);
     }
+
+
 }
