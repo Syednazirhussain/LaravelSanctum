@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use App\Models\UserProfile;
-use App\Models\DeviceToken;
 
 use App\Contracts\DeviceTokenServiceInterface;
 

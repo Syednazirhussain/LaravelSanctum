@@ -11,11 +11,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        /* Singleton service provider
-        $this->app->singleton(DeviceTokenService::class, function ($app) {
-            return new DeviceTokenService();
-        });
-        */
+        //
     }
 
     /**
