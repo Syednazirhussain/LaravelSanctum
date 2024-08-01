@@ -18,7 +18,7 @@ To feed some sample data into your database table then run the below command:
 php artisan db:seed
 ```
 
-To recieve events then run the below command:
+To process queueable events, run the below command:
 
 ```bash
 php artisan queue:work
