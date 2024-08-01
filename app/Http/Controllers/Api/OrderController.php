@@ -15,7 +15,7 @@ class OrderController extends Controller
         // Retrieve validated input data
         $validated = $request->validated();
 
-        Log::info($validated);
+        // Log::info($validated);
 
         return response()->json(['message' => 'Order created successfully'], 201);
     }
