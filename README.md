@@ -35,7 +35,7 @@ DB_USERNAME=your_username
 DB_PASSWORD=your_password
 ```
 
-Run the migration to setup test environment:
+Run the migration to setup test database:
 
 ```bash
 php artisan migrate --env=testing
