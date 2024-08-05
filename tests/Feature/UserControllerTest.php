@@ -99,14 +99,14 @@ class UserControllerTest extends TestCase
     public function it_fetches_the_authenticated_user_profile()
     {
         // Get login
-        $user = $this->authenticateUser();        
+        $user = $this->authenticateUser();
 
         // Send request to fetch user profile
         $response = $this->getJson('api/user/profile');
 
         // To access response data
-        $responseContent = $response->getContent();
-        Log::info($responseContent);
+        // $responseContent = $response->getContent();
+        // Log::info($responseContent);
 
         // Assert
         $response->assertStatus(200)
@@ -127,6 +127,36 @@ class UserControllerTest extends TestCase
                 ]
             ]);
     }
+
+    /** @test */
+    public function it_updates_the_authenticated_user_profile()
+    {
+        // Get login
+        $user = $this->authenticateUser();
+
+        // Define the new profile data
+        $newProfileData = [
+            'gender' => 'male'
+        ];
+
+        // Send request to update user profile
+        $response = $this->putJson('api/user/profile', $newProfileData);
+
+        // To access response data
+        $responseContent = $response->getContent();
+        Log::info($responseContent);
+
+        // Assert
+        $response->assertStatus(200)
+            ->assertJsonPath('profile.gender', $newProfileData['gender']);
+
+        // Additional assertions if necessary
+        $this->assertDatabaseHas('user_profiles', [
+            'user_id' => $user->id,
+            'gender'  => 'male'
+        ]);
+    }
+
 
     /** @test */
     public function it_adds_a_device_token_for_the_authenticated_user()
