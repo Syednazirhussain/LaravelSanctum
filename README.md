@@ -12,7 +12,7 @@ To setup database, update (`.env`) file with your database credentials and run t
 php artisan migrate
 ```
 
-To feed some sample data into your database table then run the below command:
+To feed some sample data into your database tables, then run the below command:
 
 ```bash
 php artisan db:seed
