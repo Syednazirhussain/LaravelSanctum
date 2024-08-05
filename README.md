@@ -56,7 +56,7 @@ php artisan test --filter=UserControllerTest
 Run specific test method:
 
 ```bash
-php artisan test --filter="UserControllerTest::testAddDeviceToken"
+php artisan test --filter="UserControllerTest::it_fetches_the_authenticated_user_profile"
 ```
 
 ## INSTALLED PACKAGES
