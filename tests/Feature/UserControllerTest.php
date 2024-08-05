@@ -85,7 +85,7 @@ class UserControllerTest extends TestCase
 
         // Sanctum::actingAs sets the current authenticated user for the request
         Sanctum::actingAs($user, ['*']);
-        
+
         return $user;
     }
 
@@ -93,6 +93,39 @@ class UserControllerTest extends TestCase
     {
         parent::setUp();
         // Setup code like seeding roles or other necessary data
+    }
+
+    /** @test */
+    public function it_fetches_the_authenticated_user_profile()
+    {
+        // Get login
+        $user = $this->authenticateUser();        
+
+        // Send request to fetch user profile
+        $response = $this->getJson('api/user/profile');
+
+        // To access response data
+        $responseContent = $response->getContent();
+        Log::info($responseContent);
+
+        // Assert
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'user' => [
+                    'id',
+                    'name',
+                    'email',
+                    'email_verified_at',
+                    'created_at',
+                    'updated_at',
+                    'img_url',
+                    'profile',
+                    'device_tokens',
+                    'phone',
+                    'address',
+                    'roles'
+                ]
+            ]);
     }
 
     /** @test */
@@ -148,9 +181,9 @@ class UserControllerTest extends TestCase
 
         $response = $this->deleteJson('/api/user/device-token', $data);
 
-        // Correct way to access response data
+        // To access response data
         $responseContent = $response->getContent();
-        echo $responseContent;
+        Log::info($responseContent);
 
         $response->assertStatus(200)
             ->assertJson(['message' => 'Device token removed successfully']);
