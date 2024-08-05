@@ -8,5 +8,5 @@ interface DeviceTokenServiceInterface
 {
     public function addDeviceToken(int $userId, string $type, string $token): DeviceToken;
 
-    public function removeDeviceToken(int $userId, string $token): bool;
+    public function removeDeviceToken(int $userId, string $type, string $token): bool;
 }

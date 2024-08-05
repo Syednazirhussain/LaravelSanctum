@@ -17,7 +17,7 @@ class DeviceTokenService implements DeviceTokenServiceInterface
         return $deviceToken;
     }
 
-    public function removeDeviceToken(int $userId, string $token): bool
+    public function removeDeviceToken(int $userId, string $type, string $token): bool
     {
         return DeviceToken::where('user_id', $userId)
             ->where('token', $token)
