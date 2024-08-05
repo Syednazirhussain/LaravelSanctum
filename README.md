@@ -12,13 +12,21 @@ To setup database, update (`.env`) file with your database credentials and run t
 php artisan migrate
 ```
 
-To feed some sample data into your database tables, then run the below command:
+To feed some sample data into your database table then run the below command:
 
 ```bash
 php artisan db:seed
 ```
 
 To process queueable events, run the below command:
+
+```bash
+php artisan queue:work
+```
+
+## TESTING GUIDE
+
+To test your application, ensure your environment is properly setup. Example update (`.env.testing`)
 
 ```bash
 DB_CONNECTION=mysql
@@ -51,16 +59,7 @@ Run specific test method:
 php artisan test --filter="UserControllerTest::testAddDeviceToken"
 ```
 
-## TESTING GUIDE
-
 ## INSTALLED PACKAGES
-
-To test your application, ensure your environment is properly setup. Example update (`.env.testing`)
-
-```bash
-php artisan queue:work
-```
-
 
 ### Swagger UI
 > https://github.com/hussein4alaa/laravel-g4t-swagger-auto-generate
