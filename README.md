@@ -26,7 +26,7 @@ php artisan queue:work
 
 ## TESTING GUIDE
 
-To test your application, ensure your environment is properly setup. Example update (`.env.testing`)
+To test your application, ensure your environment is properly setup. For example update (`.env.testing`)
 
 ```bash
 DB_CONNECTION=mysql
