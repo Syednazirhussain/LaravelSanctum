@@ -30,5 +30,6 @@ php artisan queue:work
 > https://github.com/hussein4alaa/laravel-g4t-swagger-auto-generate
 > https://www.youtube.com/watch?v=bI1BY9tAwOw
 
-### JSON Force Response
+### CODE SNIPPETS
+> https://www.twilio.com/en-us/blog/queueing-in-laravel
 > https://laraveldaily.com/tip/force-json-response-for-api-requests
