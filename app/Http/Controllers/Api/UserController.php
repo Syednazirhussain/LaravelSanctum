@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Role;
 use App\Models\User;
 use App\Models\UserProfile;
 
-use App\Contracts\DeviceTokenServiceInterface;
-
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -16,9 +16,11 @@ use App\Http\Requests\DeviceTokenRequest;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Http\Requests\ResetPasswordRequest;
 
+use App\Jobs\SendUserInformation;
+
+use App\Contracts\DeviceTokenServiceInterface;
+
 use App\Http\Controllers\Controller;
-use App\Models\Role;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -59,9 +61,22 @@ class UserController extends Controller
         // Get the filtered list of users
         $users = $query->with('roles')->get();
 
-        Log::info($users);
-
         return response()->json(['users' => $users]);
+    }
+
+    public function sendEmail(): JsonResponse
+    {
+        // Get admin users'
+        $admins = User::whereHas('roles', function($query) {
+            $query->where('code', 'admin');
+        })->get();
+
+        Log::info($admins);
+
+        // Dispatch job
+        SendUserInformation::dispatch($admins);
+
+        return response()->json(['message' => 'Email has been sent to admins'], 200);
     }
 
     public function currentUser(): JsonResponse
