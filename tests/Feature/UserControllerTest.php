@@ -6,14 +6,19 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\UserProfile;
 
+use Carbon\Carbon;
 use Tests\TestCase;
-
 use Laravel\Sanctum\Sanctum;
+
+use Illuminate\Http\UploadedFile;
+
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Log;
 
 class UserControllerTest extends TestCase
 {
@@ -129,6 +134,46 @@ class UserControllerTest extends TestCase
     }
 
     /** @test */
+    public function it_uploads_the_user_profile_image()
+    {
+        // Authenticate the user
+        $user = $this->authenticateUser();
+
+        // Create a fake image file
+        $fakeImage = UploadedFile::fake()->image('profile.jpg', 600, 600);
+
+        // Define the profile data with the fake image
+        $profileData = [
+            'profile_img' => $fakeImage,
+        ];
+
+        // Send request to update user profile with the image
+        $response = $this->putJson('api/user/profile', $profileData);
+
+        // Get the response content
+        $responseContent = $response->getContent();
+        Log::info($responseContent);
+
+        // Assert the response status is 200 (OK)
+        $response->assertStatus(200);
+
+        // Assert the response contains the correct profile image path
+        $response->assertJsonPath('profile.profile_img', function ($value) {
+            return Str::contains($value, 'profile-images/');
+        });
+
+        // Assert the image was stored in the correct location
+        Storage::disk('public')->assertExists('profile-images/' . $fakeImage->hashName());
+
+        // Additional assertion to check if the profile image was updated in the database
+        $this->assertDatabaseHas('user_profiles', [
+            'user_id'       => $user->id,
+            'profile_img'   => 'profile-images/' . $fakeImage->hashName(),
+        ]);
+    }
+
+
+    /** @test */
     public function it_updates_the_authenticated_user_profile()
     {
         // Get login
@@ -136,7 +181,8 @@ class UserControllerTest extends TestCase
 
         // Define the new profile data
         $newProfileData = [
-            'gender' => 'male'
+            'gender'    => 'female',
+            'dob'       => Carbon::parse('1998-09-08')->format('Y-m-d')
         ];
 
         // Send request to update user profile
@@ -152,8 +198,9 @@ class UserControllerTest extends TestCase
 
         // Additional assertions if necessary
         $this->assertDatabaseHas('user_profiles', [
-            'user_id' => $user->id,
-            'gender'  => 'male'
+            'user_id'   => $user->id,
+            'dob'       => $newProfileData['dob'],
+            'gender'    => $newProfileData['gender']
         ]);
     }
 
