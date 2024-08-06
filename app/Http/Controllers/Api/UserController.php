@@ -71,8 +71,6 @@ class UserController extends Controller
             $query->where('code', 'admin');
         })->get();
 
-        Log::info($admins);
-
         // Dispatch job
         SendUserInformation::dispatch($admins);
 

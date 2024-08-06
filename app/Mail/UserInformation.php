@@ -56,7 +56,7 @@ class UserInformation extends Mailable
     public function attachments(): array
     {
         return [
-            public_path($this->pdfPath)
+            storage_path($this->pdfPath)
         ];
     }
 }

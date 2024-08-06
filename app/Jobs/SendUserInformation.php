@@ -34,14 +34,18 @@ class SendUserInformation implements ShouldQueue
     public function handle()
     {
         // Generate PDF
-        $users = User::whereHas('roles', function($query) {
-            $query->where('code', '!=', 'admin');
-        })->get();
+        $users = User::whereHas('roles', function ($query) {
+                        $query->where('code', '!=', 'admin');
+                    })
+                    ->with([
+                        'phone',
+                        'address'
+                    ])
+                    ->get();
 
-        
         $pdf = Pdf::loadView('pdf.user-info', ['users' => $users]);
         $pdfPath = 'user-info-' . time() . '.pdf';
-        $pdf->save(public_path($pdfPath));
+        $pdf->save(storage_path($pdfPath));
 
         // Send email
         foreach ($this->admins as $admin) {
@@ -49,6 +53,6 @@ class SendUserInformation implements ShouldQueue
         }
 
         // Remove the generated PDF
-        unlink(public_path($pdfPath));
+        unlink(storage_path($pdfPath));
     }
 }

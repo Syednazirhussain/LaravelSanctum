@@ -29,6 +29,8 @@
             <tr>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
             </tr>
         </thead>
         <tbody>
@@ -37,6 +39,8 @@
                     <tr>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
+                        <td>{{ $user->phone && $user->phone->user_id ? $user->phone->code.' '.$user->phone->number: '' }}</td>
+                        <td>{{ $user->address && $user->address->user_id ? $user->address->line_address_1.','.$user->address->city.','.$user->address->state.','.$user->address->country: '' }}</td>
                     </tr>
                 @endforeach
             @endif
