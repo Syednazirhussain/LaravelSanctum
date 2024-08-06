@@ -72,7 +72,10 @@ class UserController extends Controller
         })->get();
 
         // Dispatch job
-        SendUserInformation::dispatch($admins);
+        // SendUserInformation::dispatch($admins);
+
+        // Dispatch via helper method
+        dispatch(new SendUserInformation($admins));
 
         return response()->json(['message' => 'Email has been sent to admins'], 200);
     }
