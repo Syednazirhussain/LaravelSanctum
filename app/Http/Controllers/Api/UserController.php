@@ -17,6 +17,8 @@ use App\Http\Requests\ProfileUpdateRequest;
 use App\Http\Requests\ResetPasswordRequest;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -25,6 +27,41 @@ class UserController extends Controller
     public function __construct(DeviceTokenServiceInterface $deviceTokenService)
     {
         $this->deviceTokenService = $deviceTokenService;
+    }
+
+    /**
+     * Display a listing of the users except 'Admin' role.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index(Request $request)
+    {
+        // Get the 'type' query parameter
+        $type = $request->query('type');
+
+        // Get the 'Admin' role ID
+        $adminRoleIds = Role::where('code', 'admin')->get()->pluck('id')->toArray();
+
+        // Base query to exclude users with the 'Admin' role
+        $query = User::whereDoesntHave('roles', function ($query) use ($adminRoleIds) {
+            $query->whereIn('id', $adminRoleIds);
+        });
+
+        // Apply additional filtering based on 'type' if provided
+        if ($type) {
+            // Example filter, adjust according to your specific implementation
+            $query->whereHas('roles', function ($query) use ($type) {
+                $query->where('code', $type);
+            });
+        }
+
+        // Get the filtered list of users
+        $users = $query->with('roles')->get();
+
+        Log::info($users);
+
+        return response()->json(['users' => $users]);
     }
 
     public function currentUser(): JsonResponse
@@ -89,6 +126,4 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Device token not found'], 404);
     }
-
-
 }

@@ -50,6 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/notifications/{id}/read', [NotificationController::class, 'read']);
     Route::put('/notifications/read-all', [NotificationController::class, 'readAll']);
 
+    Route::get('/user', [UserController::class, 'index']);
     Route::get('/user/profile', [UserController::class, 'currentUser']);
     Route::put('/user/profile', [UserController::class, 'updateProfile']);
     Route::put('/user/password', [UserController::class, 'resetPassword']);
