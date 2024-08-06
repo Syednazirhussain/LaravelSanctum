@@ -33,7 +33,7 @@ class SendUserInformation implements ShouldQueue
      */
     public function handle()
     {
-        // Generate PDF
+        // Get all users except admin's
         $users = User::whereHas('roles', function ($query) {
                         $query->where('code', '!=', 'admin');
                     })
@@ -43,6 +43,7 @@ class SendUserInformation implements ShouldQueue
                     ])
                     ->get();
 
+        // Generate PDF
         $pdf = Pdf::loadView('pdf.user-info', ['users' => $users]);
         $pdfPath = 'user-info-' . time() . '.pdf';
         $pdf->save(storage_path($pdfPath));
