@@ -93,7 +93,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::middleware(['order'])->group(function () {
-        Route::post('/orders', [OrderController::class, 'create'])->middleware("role:waiter,customer");
+        // Route::post('/orders', [OrderController::class, 'create'])->middleware("role:waiter,customer");
+        Route::post('/orders', [OrderController::class, 'create'])->middleware("abilities:view_menu");
     });
     
 

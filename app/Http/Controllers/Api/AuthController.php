@@ -85,9 +85,19 @@ class AuthController extends Controller
             ], 401);
         }
 
+        $user = User::where('email', $request->email)->with('roles.permissions')->firstOrFail();
+        if (!$user) {
+            return response()->json(['message' => 'Email not found'], 401);
+        }
 
-        $user   = User::where('email', $request->email)->firstOrFail();
-        $token  = $user->createToken('auth_token', ['*'])->plainTextToken;
+        // Retrieve all permissions from each role of the user
+        $permissions = $user->roles->flatMap(function ($role) {
+            return $role->permissions;
+        })->pluck('code')->unique()->toArray();
+
+        Log::info($permissions);
+        
+        $token  = $user->createToken('auth_token', $permissions)->plainTextToken;
 
         return response()->json([
             'message'       => 'Login success',
