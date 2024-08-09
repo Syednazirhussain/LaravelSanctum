@@ -97,5 +97,4 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/orders', [OrderController::class, 'create'])->middleware("abilities:view_menu");
     });
     
-
 });
