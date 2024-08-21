@@ -59,6 +59,26 @@ Run specific test method:
 php artisan test --filter="UserControllerTest::it_fetches_the_authenticated_user_profile"
 ```
 
+## SETUP CRON JOB
+
+To setup cron on ubuntu server, copy and paste the below command.
+
+```bash
+* * * * * cd /var/www/html/LaravelSanctum && php artisan schedule:run >> /var/log/cron.log 2>&1
+```
+
+To check the cron status
+
+```bash
+sudo systemctl status cron
+```
+
+To run the cron job
+
+```bash
+sudo systemctl start cron
+```
+
 ## INSTALLED PACKAGES
 
 ### Swagger UI
