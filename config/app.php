@@ -72,6 +72,8 @@ return [
 
     'timezone' => 'UTC',
 
+    'cron_url' => env('CRON_URL', 'https://jsonplaceholder.typicode.com/users'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration

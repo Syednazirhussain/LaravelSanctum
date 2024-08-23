@@ -79,6 +79,31 @@ To run the cron job
 sudo systemctl start cron
 ```
 
+## SUPERVISOR
+
+To Check Supervisor
+
+```bash
+sudo systemctl stop supervisor
+sudo systemctl start supervisor
+sudo systemctl status supervisor
+```
+
+To view supervisor conf.d file. Open (`/etc/supervisor/conf.d`)
+
+Reload Supervisor
+
+```bash
+sudo supervisorctl reread
+sudo supervisorctl update
+```
+
+To Start Laravel Queue
+
+```bash
+sudo supervisorctl start "laravel-worker:*"
+```
+
 ## INSTALLED PACKAGES
 
 ### Swagger UI

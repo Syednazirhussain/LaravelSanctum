@@ -27,7 +27,7 @@ class TestCron extends Command
     public function handle()
     {
         info("Cron Job running at ". now());
-        $response = Http::get('https://jsonplaceholder.typicode.com/users');
+        $response = Http::get(config('app.cron_url'));
         
         $users = $response->json();
 
