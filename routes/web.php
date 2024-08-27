@@ -61,8 +61,13 @@ Route::get('/github/callback', function (Request $request) {
 Route::get('/auth/facebook/redirect', function () {
     return Socialite::driver('facebook')->redirect();
 })->name('facebook_login');
+
 Route::get('/facebook/callback', function (Request $request) {
-    dd($request->all());
+
+    info($request->all());
+
+    $user = Socialite::driver('facebook')->user();
+    dd($user);
 });
 
 Route::get('/auth/google/redirect', function () {
