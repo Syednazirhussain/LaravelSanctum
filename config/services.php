@@ -31,4 +31,28 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'github' => [
+        'client_id' => env('GITHUB_CLIENT_ID'),
+        'client_secret' => env('GITHUB_CLIENT_SECRET'),
+        'redirect' => env('GITHUB_CALLBACK_URL', 'http://example.com/callback-url'),
+    ],
+
+    'facebook' => [
+        'client_id' => env('FACEBOOK_CLIENT_ID'),
+        'client_secret' => env('FACEBOOK_CLIENT_SECRET'),
+        'redirect' => env('FACEBOOK_CALLBACK_URL', 'http://example.com/callback-url'),
+    ],
+
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_CALLBACK_URL', 'http://example.com/callback-url'),
+    ],
+
+    'linkedin-openid' => [
+        'client_id' => env('LINKDIN_CLIENT_ID'),
+        'client_secret' => env('LINKDIN_CLIENT_SECRET'),
+        'redirect' => env('LINKDIN_CALLBACK_URL', 'http://example.com/callback-url'),
+    ],
+
 ];
