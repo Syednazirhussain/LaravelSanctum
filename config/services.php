@@ -49,7 +49,7 @@ return [
         'redirect' => env('GOOGLE_CALLBACK_URL', 'http://example.com/callback-url'),
     ],
 
-    'linkedin-openid' => [
+    'linkedin' => [
         'client_id' => env('LINKDIN_CLIENT_ID'),
         'client_secret' => env('LINKDIN_CLIENT_SECRET'),
         'redirect' => env('LINKDIN_CALLBACK_URL', 'http://example.com/callback-url'),

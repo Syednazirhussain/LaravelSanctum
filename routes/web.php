@@ -73,13 +73,37 @@ Route::get('/facebook/callback', function (Request $request) {
 Route::get('/auth/google/redirect', function () {
     return Socialite::driver('google')->redirect();
 })->name('google_login');
+
 Route::get('/google/callback', function (Request $request) {
-    dd($request->all());
+
+    info($request->all());
+
+    $user = Socialite::driver('google')->user();
+
+    $user = User::updateOrCreate([
+        'google_id' => $user->getId(),
+        'email' => $user->getEmail(),
+    ], [
+        'name' => $user->getName(),
+        'google_token' => $user->token,
+        'google_refresh_token' => $user->refreshToken,
+        'password' => Hash::make('password')
+    ]);
+ 
+    Auth::login($user);
+
+    return redirect()->intended();
+
 });
 
 Route::get('/auth/linkedin/redirect', function () {
     return Socialite::driver('linkedin')->redirect();
 })->name('linkedin_login');
+
 Route::get('/linkedin/callback', function (Request $request) {
-    dd($request->all());
+
+    info($request->all());
+
+    $user = Socialite::driver('linkedin')->user();
+    dd($user);
 });
